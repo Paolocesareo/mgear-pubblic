@@ -133,44 +133,6 @@
       font-size: 16px;
     }
     
-    .success {
-      display: none;
-      margin-top: 30px;
-    }
-    
-    .success-icon {
-      font-size: 60px;
-      margin-bottom: 15px;
-    }
-    
-    .success-title {
-      color: #22c55e;
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    
-    .success-message {
-      color: #6c757d;
-      font-size: 16px;
-      line-height: 1.5;
-    }
-    
-    .error {
-      display: none;
-      margin-top: 20px;
-      padding: 15px;
-      background: #fee;
-      border-left: 4px solid #ef4444;
-      border-radius: 8px;
-      text-align: left;
-    }
-    
-    .error-text {
-      color: #dc2626;
-      font-size: 14px;
-    }
-    
     @media (max-width: 480px) {
       .container {
         padding: 30px 20px;
@@ -210,21 +172,7 @@
     
     <div class="loading" id="loading">
       <div class="loading-spinner"></div>
-      <div class="loading-text">Invio in corso...</div>
-    </div>
-    
-    <div class="success" id="success">
-      <div class="success-icon">✅</div>
-      <div class="success-title" id="successTitle">Confermato!</div>
-      <div class="success-message" id="successMessage">
-        Grazie per la risposta.
-      </div>
-    </div>
-    
-    <div class="error" id="error">
-      <div class="error-text">
-        Si è verificato un errore. Per favore riprova o contatta l'amministratore.
-      </div>
+      <div class="loading-text">Invio conferma...</div>
     </div>
   </div>
   
@@ -243,68 +191,37 @@
     };
     
     // Funzione invio risposta
-    async function inviaRisposta(risposta) {
-      // Nascondi button e errori
+    function inviaRisposta(risposta) {
+      // Nascondi button
       document.getElementById('buttons').style.display = 'none';
-      document.getElementById('error').style.display = 'none';
       
       // Mostra loading
       document.getElementById('loading').style.display = 'block';
       
-      try {
-        // Webhook Zapier
-        const webhookUrl = 'https://hooks.zapier.com/hooks/catch/3372239/urugx3g/';
-        
-        const response = await fetch(webhookUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            rowid: rowid,
-            risposta: risposta,
-            codice: codice,
-            timestamp: new Date().toISOString()
-          })
-        });
-        
-        if (!response.ok) {
-          throw new Error('Errore nella risposta del server');
-        }
-        
-        // Nascondi loading
-        document.getElementById('loading').style.display = 'none';
-        
-        // Mostra success
-        const successDiv = document.getElementById('success');
-        const successTitle = document.getElementById('successTitle');
-        const successMessage = document.getElementById('successMessage');
-        
-        if (risposta === 'Accetto') {
-          successTitle.textContent = '✅ Incarico Accettato!';
-          successMessage.textContent = 'Grazie per aver accettato l\'incarico. L\'amministratore è stato notificato.';
-        } else {
-          successTitle.textContent = '❌ Incarico Rifiutato';
-          successTitle.style.color = '#ef4444';
-          successMessage.textContent = 'Grazie per la risposta. L\'amministratore è stato notificato.';
-        }
-        
-        successDiv.style.display = 'block';
-        
-      } catch (error) {
-        console.error('Errore:', error);
-        
-        // Nascondi loading
-        document.getElementById('loading').style.display = 'none';
-        
-        // Mostra errore
-        document.getElementById('error').style.display = 'block';
-        
-        // Rimostra button dopo 3 secondi
-        setTimeout(() => {
-          document.getElementById('buttons').style.display = 'flex';
-        }, 3000);
-      }
+      // Costruisci URL webhook Zapier con parametri GET
+      const webhookUrl = 'https://hooks.zapier.com/hooks/catch/3372239/urugx3g/';
+      const zapierUrl = webhookUrl + '?' + new URLSearchParams({
+        rowid: rowid,
+        risposta: risposta,
+        codice: codice,
+        timestamp: new Date().toISOString()
+      }).toString();
+      
+      // Messaggio WhatsApp
+      const emoji = risposta === 'Accetto' ? '✅' : '❌';
+      const testoConferma = emoji + ' CONFERMO ' + risposta.toUpperCase() + ' INCARICO ' + codice;
+      const whatsappUrl = 'whatsapp://send?text=' + encodeURIComponent(testoConferma);
+      
+      // Crea iframe nascosto per chiamare webhook
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = zapierUrl;
+      document.body.appendChild(iframe);
+      
+      // Dopo 2 secondi, apri WhatsApp
+      setTimeout(function() {
+        window.location.href = whatsappUrl;
+      }, 2000);
     }
   </script>
 </body>
