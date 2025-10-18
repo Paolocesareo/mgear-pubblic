@@ -190,22 +190,21 @@
       this.style.display = 'none';
     };
     
-    // Funzione invio risposta
-    function inviaRisposta(risposta) {
-      // Nascondi button
-      document.getElementById('buttons').style.display = 'none';
-      
-      // Mostra loading
-      document.getElementById('loading').style.display = 'block';
-      
-      // Costruisci URL webhook Zapier con parametri GET
-      const webhookUrl = 'https://hooks.zapier.com/hooks/catch/3372239/urugx3g/';
-      const zapierUrl = webhookUrl + '?' + new URLSearchParams({
-        rowid: rowid,
-        risposta: risposta,
-        codice: codice,
-        timestamp: new Date().toISOString()
-      }).toString();
+function inviaRisposta(risposta) {
+  // Nascondi button
+  document.getElementById('buttons').style.display = 'none';
+  
+  // Mostra loading
+  document.getElementById('loading').style.display = 'block';
+  
+  // Costruisci URL webhook Zapier con parametri GET
+  const webhookUrl = 'https://hooks.zapier.com/hooks/catch/3372239/urugx3g/';
+  const zapierUrl = webhookUrl + '?' + new URLSearchParams({
+    rowid: rowid,
+    risposta: risposta === 'Accetto' ? 'Accettata' : 'Rifiutata',
+    codice: codice,
+    timestamp: new Date().toISOString()
+  }).toString();
       
       // Messaggio WhatsApp
       const emoji = risposta === 'Accetto' ? '✅' : '❌';
