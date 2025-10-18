@@ -191,20 +191,14 @@
     };
     
 function inviaRisposta(risposta) {
-  // Nascondi button
-  document.getElementById('buttons').style.display = 'none';
+  const messaggio = risposta === 'Accetto' ? 
+    '✅ CONFERMO ACCETTAZIONE INCARICO ' + codice :
+    '❌ CONFERMO RIFIUTO INCARICO ' + codice;
   
-  // Mostra loading
-  document.getElementById('loading').style.display = 'block';
+  const whatsappUrl = 'https://api.whatsapp.com/send?phone=39' + tel_studio + '&text=' + encodeURIComponent(messaggio);
   
-  // Costruisci URL webhook Zapier con parametri GET
-  const webhookUrl = 'https://hooks.zapier.com/hooks/catch/3372239/urugx3g/';
-  const zapierUrl = webhookUrl + '?' + new URLSearchParams({
-    rowid: rowid,
-    risposta: risposta === 'Accetto' ? 'Accettata' : 'Rifiutata',
-    codice: codice,
-    timestamp: new Date().toISOString()
-  }).toString();
+  window.location.href = whatsappUrl;
+}
       
       // Messaggio WhatsApp
       const emoji = risposta === 'Accetto' ? '✅' : '❌';
