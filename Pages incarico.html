@@ -12,179 +12,37 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
         }
         
-        .container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px 30px;
-            max-width: 500px;
-            width: 100%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .logo h1 {
-            color: #667eea;
-            font-size: 32px;
-            margin-bottom: 5px;
-        }
-        
-        .logo p {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .codice-richiesta {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .codice-richiesta h2 {
-            font-size: 18px;
-            font-weight: normal;
-            margin-bottom: 10px;
-            opacity: 0.9;
-        }
-        
-        .codice-richiesta .codice {
-            font-size: 36px;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-        
-        .sezione {
-            margin-bottom: 30px;
-        }
-        
-        .sezione h3 {
-            color: #333;
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
-        
-        .radio-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        
-        .radio-option {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 12px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-        }
-        
-        .radio-option:hover {
-            border-color: #667eea;
-            background: #f0f4ff;
-        }
-        
-        .radio-option input[type="radio"] {
-            margin-right: 12px;
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-        
-        .radio-option.selected {
-            border-color: #667eea;
-            background: #f0f4ff;
-        }
-        
-        .radio-option label {
-            cursor: pointer;
-            flex: 1;
-            font-size: 16px;
-            color: #333;
-        }
-        
-        .sezione.hidden {
-            display: none;
-        }
-        
-        .btn {
-            width: 100%;
-            padding: 18px;
-            font-size: 18px;
-            font-weight: bold;
+        iframe {
             border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-        }
-        
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .error-message {
-            background: #fee;
-            color: #c33;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 15px;
-            display: none;
-            text-align: center;
-        }
-        
-        .success-message {
-            background: #efe;
-            color: #3c3;
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 15px;
-            display: none;
-            text-align: center;
+            width: 100%;
+            height: 100vh;
+            display: block;
         }
         
         .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             text-align: center;
-            margin-top: 15px;
-            display: none;
+            color: #666;
         }
         
         .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             animation: spin 1s linear infinite;
-            margin: 0 auto;
+            margin: 0 auto 15px;
         }
         
         @keyframes spin {
@@ -194,248 +52,58 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">
-            <h1>🔧 GEAR</h1>
-            <p>Conferma Incarico</p>
-        </div>
-        
-        <div class="codice-richiesta">
-            <h2>Richiesta N.</h2>
-            <div class="codice" id="codice">---</div>
-        </div>
-        
-        <!-- SEZIONE 1: Disponibilità -->
-        <div class="sezione">
-            <h3>Puoi accettare questo incarico?</h3>
-            <div class="radio-group">
-                <div class="radio-option" onclick="selezionaDisponibilita('giornata')">
-                    <input type="radio" name="disponibilita" id="disp_giornata" value="In giornata">
-                    <label for="disp_giornata">Riesco ad intervenire in giornata</label>
-                </div>
-                <div class="radio-option" onclick="selezionaDisponibilita('1-2giorni')">
-                    <input type="radio" name="disponibilita" id="disp_1-2giorni" value="In 1-2 giorni">
-                    <label for="disp_1-2giorni">Riesco ad intervenire in 1-2 giorni</label>
-                </div>
-                <div class="radio-option" onclick="selezionaDisponibilita('non-posso')">
-                    <input type="radio" name="disponibilita" id="disp_nonposso" value="Non può intervenire">
-                    <label for="disp_nonposso">Non riesco ad intervenire</label>
-                </div>
-            </div>
-        </div>
-        
-        <!-- SEZIONE 2: Tempo Stimato -->
-        <div class="sezione" id="sezione-tempo">
-            <h3>Che tempi stimi per questo intervento?</h3>
-            <div class="radio-group">
-                <div class="radio-option" onclick="selezionaTempo('1-3ore')">
-                    <input type="radio" name="tempo" id="tempo_1-3ore" value="1-3 ore">
-                    <label for="tempo_1-3ore">1-3 ore</label>
-                </div>
-                <div class="radio-option" onclick="selezionaTempo('mezza-giornata')">
-                    <input type="radio" name="tempo" id="tempo_mezza" value="Mezza giornata">
-                    <label for="tempo_mezza">Mezza giornata</label>
-                </div>
-                <div class="radio-option" onclick="selezionaTempo('una-giornata')">
-                    <input type="radio" name="tempo" id="tempo_una" value="Una giornata">
-                    <label for="tempo_una">Una giornata</label>
-                </div>
-            </div>
-        </div>
-        
-        <button class="btn btn-primary" onclick="confermaIncarico()">CONFERMA</button>
-        
-        <div class="error-message" id="error-message"></div>
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p style="margin-top: 10px;">Invio in corso...</p>
-        </div>
-        <div class="success-message" id="success-message">
-            ✅ Conferma inviata! Apertura WhatsApp...
-        </div>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Caricamento form...</p>
     </div>
     
+    <iframe id="jotformFrame" src="" scrolling="yes" style="display:none;"></iframe>
+    
     <script>
-        // Estrai parametri URL
+        // Estrai parametri URL da short link
         const params = new URLSearchParams(window.location.search);
-        const rowid = params.get('rowid');
-        const codice = params.get('codice') || '---';
-        const tel_studio = '39' + (params.get('tel_studio') || '');
+        const codice = params.get('codice') || 'N/A';
+        const rowid = params.get('rowid') || '';
+        const tel_studio = params.get('tel_studio') || '';
         
-        // Mostra codice richiesta
-        document.getElementById('codice').textContent = codice;
+        // Costruisci URL JotForm con parametri hidden field
+        const jotformUrl = 'https://form.jotform.com/252886339886075?' + 
+            'codice_richiesta=' + encodeURIComponent(codice) +
+            '&rowid=' + encodeURIComponent(rowid);
         
-        let disponibilitaSelezionata = null;
-        let tempoSelezionato = null;
+        // Debug (opzionale - rimuovi in produzione)
+        console.log('Parametri ricevuti:', { codice, rowid, tel_studio });
+        console.log('URL JotForm:', jotformUrl);
         
-        function selezionaDisponibilita(tipo) {
-            // Rimuovi selezione precedente
-            document.querySelectorAll('.radio-option input[name="disponibilita"]').forEach(r => {
-                r.checked = false;
-                r.parentElement.classList.remove('selected');
-            });
-            
-            // Seleziona nuovo
-            const radio = document.getElementById('disp_' + tipo);
-            radio.checked = true;
-            radio.parentElement.classList.add('selected');
-            disponibilitaSelezionata = radio.value;
-            
-            // Mostra/Nascondi sezione tempo
-            const sezioneTempo = document.getElementById('sezione-tempo');
-            if (tipo === 'non-posso') {
-                sezioneTempo.classList.add('hidden');
-                tempoSelezionato = null;
-                // Deseleziona tempo
-                document.querySelectorAll('.radio-option input[name="tempo"]').forEach(r => {
-                    r.checked = false;
-                    r.parentElement.classList.remove('selected');
-                });
-            } else {
-                sezioneTempo.classList.remove('hidden');
-            }
-        }
+        // Carica iframe
+        const iframe = document.getElementById('jotformFrame');
+        iframe.src = jotformUrl;
         
-        function selezionaTempo(tipo) {
-            // Rimuovi selezione precedente
-            document.querySelectorAll('.radio-option input[name="tempo"]').forEach(r => {
-                r.checked = false;
-                r.parentElement.classList.remove('selected');
-            });
-            
-            // Seleziona nuovo
-            const radio = document.getElementById('tempo_' + tipo);
-            radio.checked = true;
-            radio.parentElement.classList.add('selected');
-            tempoSelezionato = radio.value;
-        }
+        // Nascondi loading quando iframe caricato
+        iframe.onload = function() {
+            document.getElementById('loading').style.display = 'none';
+            iframe.style.display = 'block';
+        };
         
-        function confermaIncarico() {
-            // Reset messaggi
-            document.getElementById('error-message').style.display = 'none';
-            document.getElementById('success-message').style.display = 'none';
-            
-            // Validazione
-            if (!disponibilitaSelezionata) {
-                mostraErrore('Seleziona la tua disponibilità');
-                return;
-            }
-            
-            if (disponibilitaSelezionata !== 'Non può intervenire' && !tempoSelezionato) {
-                mostraErrore('Indica il tempo stimato per l\'intervento');
-                return;
-            }
-            
-            // Mostra loading
-            document.getElementById('loading').style.display = 'block';
-            
-            // Determina risposta per Glide
-            let rispostaGlide;
-            if (disponibilitaSelezionata === 'Non può intervenire') {
-                rispostaGlide = 'Rifiutata';
-            } else {
-                rispostaGlide = 'Presa in carico';
-            }
-            
-            // 1. WEBHOOK ZAPIER (aggiorna Glide)
-            const zapierUrl = 'https://hooks.zapier.com/hooks/catch/3372239/urugx3g/?' + 
-                new URLSearchParams({
-                    rowid: rowid,
-                    risposta: rispostaGlide,
-                    codice: codice,
-                    quando_intervento: disponibilitaSelezionata,
-                    tempo_stimato: tempoSelezionato || '',
-                    timestamp: new Date().toISOString()
-                });
-            
-            fetch(zapierUrl, { method: 'GET', mode: 'no-cors' })
-                .then(() => {
-                    // Mostra success
-                    document.getElementById('loading').style.display = 'none';
-                    document.getElementById('success-message').style.display = 'block';
+        // Listener per messaggi JotForm (submit completato, resize, etc)
+        window.addEventListener('message', function(event) {
+            // JotForm invia messaggi per varie azioni
+            if (typeof event.data === 'string') {
+                try {
+                    const data = JSON.parse(event.data);
                     
-                    // 2. WHATSAPP CON MESSAGGIO
-                    setTimeout(() => {
-                        inviaWhatsApp();
-                    }, 1000);
-                })
-                .catch(err => {
-                    document.getElementById('loading').style.display = 'none';
-                    mostraErrore('Errore invio. Riprova.');
-                });
-        }
-        
-        function inviaWhatsApp() {
-            let messaggio;
-            
-            if (disponibilitaSelezionata === 'Non può intervenire') {
-                // RIFIUTO
-                messaggio = `❌ RIFIUTO INCARICO ${codice}
-
-NON RIESCO AD INTERVENIRE`;
-            } else {
-                // ACCETTAZIONE
-                messaggio = `✅ CONFERMO INCARICO ${codice}
-
-Intervengo: ${disponibilitaSelezionata.toUpperCase()}
-Tempo stimato: ${tempoSelezionato.toUpperCase()}`;
+                    // Form submitted
+                    if (data.action === 'submission-completed') {
+                        console.log('Form submitted!');
+                        
+                        // Opzionale: WhatsApp redirect dopo submit
+                        // (implementiamo dopo se necessario)
+                    }
+                } catch (e) {
+                    // Ignora messaggi non-JSON
+                }
             }
-            
-            const whatsappUrl = 'https://api.whatsapp.com/send?phone=' + tel_studio + 
-                '&text=' + encodeURIComponent(messaggio);
-            
-            window.location.href = whatsappUrl;
-        }
-        
-        function mostraErrore(msg) {
-            const errorDiv = document.getElementById('error-message');
-            errorDiv.textContent = msg;
-            errorDiv.style.display = 'block';
-        }
+        });
     </script>
 </body>
 </html>
-```
-
----
-
-## 📋 COSA FA IL CODICE
-
-### **1. Sezione Disponibilità (sempre visibile):**
-- ⭕ In giornata
-- ⭕ In 1-2 giorni
-- ⭕ Non può intervenire
-
-### **2. Sezione Tempo (nascosta se rifiuta):**
-- ⭕ 1-3 ore
-- ⭕ Mezza giornata
-- ⭕ Una giornata
-
-### **3. Logica JavaScript:**
-- Se selezioni "Non può intervenire" → nasconde sezione tempo
-- Validazione: deve selezionare almeno disponibilità
-- Se accetta → deve anche selezionare tempo
-
-### **4. Webhook Zapier riceve:**
-- `rowid`
-- `risposta` → "Presa in carico" o "Rifiutata"
-- `codice`
-- `quando_intervento` → "In giornata" / "In 1-2 giorni" / "Non può intervenire"
-- `tempo_stimato` → "1-3 ore" / "Mezza giornata" / "Una giornata" (vuoto se rifiuta)
-- `timestamp`
-
-### **5. WhatsApp messaggi:**
-
-**Accettazione:**
-```
-✅ CONFERMO INCARICO 251-24
-
-Intervengo: IN GIORNATA
-Tempo stimato: 1-3 ORE
-```
-
-**Rifiuto:**
-```
-❌ RIFIUTO INCARICO 251-24
-
-NON RIESCO AD INTERVENIRE
